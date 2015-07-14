@@ -14,9 +14,8 @@ public class Core {
 
 		try {
 			while(true) {
-				if(NetworkThread.testURL()) {
-					client = new Client(Settings.server, Settings.channel, 9999);
-					System.out.println("[NET OK]");
+				if(Utilities.testURL()) {
+					client = new Client(Settings.server, Settings.channel, 7000);
 					break;
 				}
 			}

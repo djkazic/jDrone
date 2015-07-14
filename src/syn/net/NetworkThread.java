@@ -10,6 +10,9 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+
 import syn.main.Client;
 import syn.main.Utilities;
 import syn.utils.Settings;
@@ -17,7 +20,8 @@ import syn.utils.Settings;
 public class NetworkThread implements Runnable {
 	
 	private String channel;
-	private Socket socket;
+	//private Socket socket;
+	private SSLSocket socket;
 	private BufferedWriter writer;
 	private BufferedReader reader;
 	private Utilities uc;
@@ -25,28 +29,13 @@ public class NetworkThread implements Runnable {
 	
 	public NetworkThread(String server, String channel, int port) throws Exception {
 		this.channel = channel;
-		socket = new Socket(server, port);
+		SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+		socket = (SSLSocket) sslsocketfactory.createSocket(server, port);
+		//socket = new Socket(server, port);
 		writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		uc = new Utilities();
 		line = null;
-	}
-	
-	public static boolean testURL() throws Exception {
-	    String strUrl = "http://google.com";
-	    URL url = new URL(strUrl);
-        HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
-	    try {
-	        urlConn.connect();
-	        return true;
-	    } catch (Exception e) {
-	    	if(e instanceof UnknownHostException) {
-	    		System.out.println("[NET CONN DOWN]");
-	    	} else {
-	    		if(Settings.debugMode) { e.printStackTrace(); }
-	    	}
-	        return false;
-	    }
 	}
 	
 	public void run() {
@@ -77,7 +66,7 @@ public class NetworkThread implements Runnable {
 		}
 
 		// Join the channel.
-		writer.write("JOIN " + channel + " undressme\r\n");
+		writer.write("JOIN " + channel + " " + Settings.channelPass + "\r\n");
 		writer.flush();
 		Client.connected = true;
 

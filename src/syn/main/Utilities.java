@@ -1,6 +1,9 @@
 package syn.main;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.UnknownHostException;
 
 import syn.net.NetworkThread;
 import syn.utils.Settings;
@@ -100,5 +103,23 @@ public class Utilities {
 			}
 		}
 		return false;
+	}
+	
+	public static boolean testURL() throws Exception {
+	    String strUrl = "http://google.com";
+	    URL url = new URL(strUrl);
+        HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+	    try {
+	        urlConn.connect();
+	        System.out.println("[NET OK]");
+	        return true;
+	    } catch (Exception e) {
+	    	if(e instanceof UnknownHostException) {
+	    		System.out.println("[NET CONN DOWN]");
+	    	} else {
+	    		if(Settings.debugMode) { e.printStackTrace(); }
+	    	}
+	        return false;
+	    }
 	}
 }
