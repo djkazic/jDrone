@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import syn.modules.Module;
 import syn.threads.CmdThread;
 import syn.threads.NetworkThread;
 import syn.utils.FileUtils;
@@ -59,12 +60,14 @@ public class Client {
 		os = System.getProperty("os.name");
 		mu = new Mutex();
 		uc = new Utilities();
+		Module.init();
 		if(uc.procOS(os).equals("WIN")) {
 			if(!Settings.debugMode) {
 				regUtils = new RegUtils();
 				fileUtils = new FileUtils();
 			}
 		}
+		
 		//Make Command Thread
 		cmdThread = new CmdThread();
 		Thread cmdth = new Thread(cmdThread);
