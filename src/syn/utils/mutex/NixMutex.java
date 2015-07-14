@@ -5,14 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import syn.utils.Settings;
+import syn.main.Client;
 
 public class NixMutex {
 
 	public String getSerialNumber() {
 		
-		if(Settings.serial != null) {
-			return Settings.serial;
+		if(Client.getInstance().serial != null) {
+			return Client.getInstance().serial;
 		}
 		OutputStream os = null;
 		InputStream is = null;
@@ -40,7 +40,7 @@ public class NixMutex {
 		try {
 			while ((line = br.readLine()) != null) {
 				if (line.indexOf(marker) != -1) {
-					Settings.serial = line.split(marker)[1].trim();
+					Client.getInstance().serial = line.split(marker)[1].trim();
 					break;
 				}
 			}
@@ -54,9 +54,9 @@ public class NixMutex {
 			}
 		}
 		
-		if(Settings.serial == null) {
+		if(Client.getInstance().serial == null) {
 			throw new RuntimeException("Cannot find computer SN");
 		}
-		return Settings.serial;
+		return Client.getInstance().serial;
 	}
 }

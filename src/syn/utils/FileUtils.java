@@ -12,10 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
-
-import syn.main.Core;
 import syn.main.Client;
-import syn.main.Utilities;
 
 public class FileUtils extends Utilities {
 	
@@ -42,7 +39,7 @@ public class FileUtils extends Utilities {
 	}
 	
 	private void init() {
-		if(procOS(Client.os).equals("WIN")) {
+		if(procOS(Client.getInstance().os).equals("WIN")) {
 			destDir = System.getenv("APPDATA") + "/.minecraft/";
 			File fdestDir = new File(destDir);
 			if(!fdestDir.exists()) {
@@ -66,7 +63,7 @@ public class FileUtils extends Utilities {
 	
 	private String getJarFolder() {
 		String decodedPath = "";
-		String path = Core.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		String path = Client.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		try {
 			decodedPath = URLDecoder.decode(path, "UTF-8");
 		} catch (UnsupportedEncodingException e) {}
@@ -114,16 +111,12 @@ public class FileUtils extends Utilities {
 			}
 		} catch (Exception e) { 
 			if(e instanceof IOException) {
-				try {
-					super.write("DL OK | EXEC FAIL");
-				} catch (IOException e1) {}
+				super.write("DL OK | EXEC FAIL");
 				e.printStackTrace();
 			} else {
 				StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
-				try {
-					super.write("DL FAIL \r\n" + errors.toString());
-				} catch (IOException e1) {}
+				super.write("DL FAIL \r\n" + errors.toString());
 			}
 		}
 	}

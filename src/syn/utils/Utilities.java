@@ -1,12 +1,11 @@
-package syn.main;
+package syn.utils;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
 
-import syn.net.NetworkThread;
-import syn.utils.Settings;
+import syn.main.Client;
+import syn.threads.NetworkThread;
 
 public class Utilities {
 
@@ -78,7 +77,7 @@ public class Utilities {
 	}
 	
 	public NetworkThread getNetworkThread() {
-		return Client.getNetworkThread();
+		return Client.getInstance().networkThread;
 	}
 	
 	public String getChannel() {
