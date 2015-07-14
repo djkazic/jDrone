@@ -1,8 +1,9 @@
-package syn.utils;
+package syn.main;
 
 import java.io.IOException;
-import syn.main.Client;
+
 import syn.net.NetworkThread;
+import syn.utils.Settings;
 
 public class Utilities {
 

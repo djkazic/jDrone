@@ -9,9 +9,10 @@ import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
+
 import syn.main.Client;
+import syn.main.Utilities;
 import syn.utils.Settings;
-import syn.utils.Utilities;
 
 public class NetworkThread implements Runnable {
 	

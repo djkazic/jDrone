@@ -1,8 +1,8 @@
 package syn.utils.mutex;
 
 import syn.main.Client;
+import syn.main.Utilities;
 import syn.utils.Settings;
-import syn.utils.Utilities;
 
 public class Mutex {
 

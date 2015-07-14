@@ -2,9 +2,9 @@ package syn.main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import syn.net.PacketGen;
 import syn.utils.Settings;
-import syn.utils.Utilities;
 
 public class CmdThread implements Runnable {
 

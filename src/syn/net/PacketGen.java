@@ -10,7 +10,8 @@ import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import syn.utils.Utilities;
+
+import syn.main.Utilities;
 
 public class PacketGen {
 	

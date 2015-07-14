@@ -12,8 +12,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
+
 import syn.main.Core;
 import syn.main.Client;
+import syn.main.Utilities;
 
 public class FileUtils extends Utilities {
 	

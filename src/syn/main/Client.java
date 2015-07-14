@@ -8,7 +8,6 @@ import java.net.SocketException;
 import syn.net.NetworkThread;
 import syn.utils.FileUtils;
 import syn.utils.Settings;
-import syn.utils.Utilities;
 import syn.utils.mutex.Mutex;
 import syn.utils.reg.RegUtils;
 
