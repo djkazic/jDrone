@@ -118,7 +118,9 @@ public class Utilities {
         HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
 	    try {
 	        urlConn.connect();
-	        System.out.println("[NET OK]");
+	        if(Settings.debugMode) {
+	        	System.out.println("[NET OK]");
+	        }
 	        return true;
 	    } catch (Exception e) {
 	    	if(e instanceof UnknownHostException) {
