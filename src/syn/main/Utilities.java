@@ -85,14 +85,22 @@ public class Utilities {
 		return getNetworkThread().getChannel();
 	}
 	
-	public void write(String str) throws IOException {
-		getNetworkThread().getWriter().write("PRIVMSG "+ getChannel() + " :" + str + "\r\n");
-		getNetworkThread().getWriter().flush();
+	public void write(String str) {
+		try {
+			getNetworkThread().getWriter().write("PRIVMSG "+ getChannel() + " :" + str + "\r\n");
+			getNetworkThread().getWriter().flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void rawwrite(String str) throws IOException {
-		getNetworkThread().getWriter().write(str);
-		getNetworkThread().getWriter().flush();
+	public void rawwrite(String str) {
+		try {
+			getNetworkThread().getWriter().write(str);
+			getNetworkThread().getWriter().flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public boolean authCheck(String str) {
