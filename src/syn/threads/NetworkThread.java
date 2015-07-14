@@ -77,8 +77,7 @@ public class NetworkThread implements Runnable {
 			//TODO: DEBUG 
 		}
 		
-		//Disconnected
-		connect();
+		//Disconnected. Auto reconnect if DC is accidental
 	}
 	
 	public void disconnect() {
