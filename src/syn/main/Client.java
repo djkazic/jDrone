@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketException;
-import syn.mutex.Mutex;
+
 import syn.net.NetworkThread;
 import syn.utils.FileUtils;
 import syn.utils.Settings;
 import syn.utils.Utilities;
+import syn.utils.mutex.Mutex;
 import syn.utils.reg.RegUtils;
 
 @SuppressWarnings("unused")

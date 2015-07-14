@@ -1,4 +1,4 @@
-package syn.mutex;
+package syn.utils.mutex;
 
 import java.io.BufferedReader;
 import java.io.IOException;

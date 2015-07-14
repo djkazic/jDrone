@@ -1,4 +1,4 @@
-package syn.mutex;
+package syn.utils.mutex;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package syn.mutex;
+package syn.utils.mutex;
 
 import syn.main.Client;
 import syn.utils.Settings;
