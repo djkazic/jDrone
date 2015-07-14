@@ -34,7 +34,7 @@ public abstract class Module {
 		modulesList = new ArrayList<Module> ();
 		
 		new DLModule();
-		new FloodModule();
+		new NetModule();
 		new FunctionModule();
 	}
 	

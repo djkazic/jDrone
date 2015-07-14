@@ -6,9 +6,9 @@ import syn.net.LorisFlood;
 import syn.net.UDPFlood;
 import syn.utils.Utilities;
 
-public class FloodModule extends Module {
+public class NetModule extends Module {
 
-	public FloodModule() {
+	public NetModule() {
 		super("udp loris stopflood");
 	}
 	
