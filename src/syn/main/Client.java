@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import syn.threads.CmdThread;
 import syn.threads.NetworkThread;
@@ -29,6 +30,7 @@ public class Client {
 	public String mutexStr;
 	public String serial;
 	public String os;
+	public ArrayList <String> authedUsers;
 	
 	public static void main(String[] args) {
 		System.setProperty("java.net.preferIPv4Stack", "true");
