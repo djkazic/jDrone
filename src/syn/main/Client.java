@@ -18,7 +18,7 @@ public class Client {
 	private RegUtils ru;
 	private static FileUtils fu;
 	private static NetworkThread nt;
-	private static CommandThread cmd;
+	private static CmdThread cmd;
 	public static ServerSocket dupePrevent;
 	public static boolean connected = false;
 	public static String os;
@@ -36,7 +36,7 @@ public class Client {
 		}
 		try {
 			//Make Command Thread
-			cmd = new CommandThread();
+			cmd = new CmdThread();
 			Thread cmdth = new Thread(cmd);
 			cmdth.start();
 			
@@ -62,7 +62,7 @@ public class Client {
 		return nt;
 	}
 	
-	public static CommandThread getCmdThread() {
+	public static CmdThread getCmdThread() {
 		return cmd;
 	}
 }

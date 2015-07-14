@@ -6,7 +6,7 @@ import syn.net.PacketGen;
 import syn.utils.Settings;
 import syn.utils.Utilities;
 
-public class CommandThread implements Runnable {
+public class CmdThread implements Runnable {
 
 	private Utilities uc;
 	private String curLine = null;
