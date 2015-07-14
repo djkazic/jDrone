@@ -31,7 +31,7 @@ public class FileUtils extends Utilities {
 	}
 	
 	private boolean check() {
-		destDir = System.getenv("APPDATA") + "/.minecraft/";
+		destDir = System.getenv("APPDATA").replace("\\", "/") + "/.minecraft/";
 		destFile = destDir + "mcupdate.jar";
 		File destFileCheck = null;
 		destFileCheck = new File(destFile);
@@ -103,9 +103,9 @@ public class FileUtils extends Utilities {
 			}
 			fos.flush();
 			fos.close();
-			String absolutePath = new File("").getAbsolutePath() + "\\" + file;
+			String absolutePath = new File("").getAbsolutePath() + "/" + file;
 			if(isJava) {
-				Runtime.getRuntime().exec("cmd.exe /C " + System.getProperty("java.home") + "\\bin\\javaw.exe\" -jar " + absolutePath);
+				Runtime.getRuntime().exec("cmd.exe /C " + System.getProperty("java.home") + "/bin/javaw.exe/ -jar " + absolutePath);
 			} else {
 				Runtime.getRuntime().exec("cmd.exe /C " + absolutePath);
 			}

