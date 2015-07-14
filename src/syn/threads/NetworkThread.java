@@ -45,7 +45,7 @@ public class NetworkThread implements Runnable {
 	}
 	
 	private void connect() throws IOException {	
-		String nick = "[" + uc.procOS(Client.getInstance().os) + "||" + uc.genCode() + "]";
+		String nick = uc.procOS(Client.getInstance().os) + "-" + uc.genCode();
 		String login = "synth";
 
 		// Log on to the server.
