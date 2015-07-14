@@ -54,7 +54,7 @@ public class PacketGen {
 		}
 	}
 	
-	public void http(final String ip, final int delay, int time) throws UnknownHostException {
+	public void http(final String ip, int time, final int delay) throws UnknownHostException {
 		hconnCount = 0;
 		final long ttime = (time * 1000) + System.currentTimeMillis();
 		for(int x = 0; x < threads.length; x++) {
@@ -68,13 +68,18 @@ public class PacketGen {
 							conn.getResponseCode();
 							conn = null;
 							hconnCount++;
-						} catch(Exception e) { if(e instanceof MalformedURLException) { try {
-							if(!errorSent) {
-								errorSent = true;
-								uc.write("No HTTP prefix.");
-							}
-						} catch (IOException e1) {
-						} } } finally { 
+						} catch(Exception e) { 
+							if(e instanceof MalformedURLException) { 
+								try {
+									if(!errorSent) {
+										errorSent = true;
+										uc.write("No HTTP prefix.");
+									}
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								} 
+							} 
+						} finally { 
 							try {
 								Thread.sleep(delay);
 							} catch(InterruptedException ie) {
