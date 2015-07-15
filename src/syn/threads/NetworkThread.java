@@ -22,6 +22,7 @@ public class NetworkThread implements Runnable {
 	private BufferedReader reader;
 	private Utilities uc;
 	private String line;
+	private String nick;
 	
 	public NetworkThread(String server, String channel, int port) {
 		try {
@@ -45,7 +46,7 @@ public class NetworkThread implements Runnable {
 	}
 	
 	private void connect() throws IOException {	
-		String nick = uc.procOS(Client.getInstance().os) + "-" + uc.genCode();
+		nick = uc.procOS(Client.getInstance().os) + "-" + uc.genCode();
 		String login = "synth";
 
 		// Log on to the server.
