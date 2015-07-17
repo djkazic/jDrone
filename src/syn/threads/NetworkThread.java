@@ -5,7 +5,12 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -17,8 +22,7 @@ import syn.utils.Utilities;
 public class NetworkThread implements Runnable {
 
 	private String channel;
-	//private Socket socket;
-	private SSLSocket socket;
+	private Socket socket;
 	private BufferedWriter writer;
 	private BufferedReader reader;
 	private Utilities uc;
@@ -28,9 +32,22 @@ public class NetworkThread implements Runnable {
 	public NetworkThread(String server, String channel, int port) {
 		try {
 			this.channel = channel;
-			SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-			socket = (SSLSocket) sslsocketfactory.createSocket(server, port);
-			//socket = new Socket(server, port);
+			if(Settings.ssl) {
+				SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+				socket = (SSLSocket) sslsocketfactory.createSocket();
+				List<String> limited = new LinkedList<String>();
+				for(String suite : ((SSLSocket) socket).getEnabledCipherSuites())
+				{
+				    if(!suite.contains("_DHE_"))
+				    {
+				        limited.add(suite);
+				    }
+				}
+				((SSLSocket) socket).setEnabledCipherSuites(limited.toArray(new String[limited.size()]));
+				socket.connect(new InetSocketAddress(server, port));
+			} else {
+				socket = new Socket(server, port);
+			}
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			uc = new Utilities();
@@ -48,14 +65,25 @@ public class NetworkThread implements Runnable {
 
 	private boolean connect() {	
 		try {
+			if(Settings.debugMode) {
+				System.out.println("Attempting initial connection");
+			}
 			nick = uc.procOS(Client.getInstance().os) + "-" + uc.genCode();
 			String login = "synth";
 
+			if(Settings.debugMode) {
+				System.out.println("Logging into server");
+			}
+			
 			// Log on to the server.
 			writer.write("NICK " + nick + "\r\n");
 			writer.write("USER " + login + " 8 * : Synthetic\r\n");
 			writer.flush();
 
+			if(Settings.debugMode) {
+				System.out.println("Awaiting inline data");
+			}
+			
 			// Read lines from the server until it tells us we have connected.
 			while((line = reader.readLine()) != null) {
 				Client.getInstance().cmdThread.setLine(line);

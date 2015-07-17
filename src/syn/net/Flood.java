@@ -2,7 +2,7 @@ package syn.net;
 
 public abstract class Flood implements Runnable {
 	
-	public static final int threadsToUse = Runtime.getRuntime().availableProcessors() * 2;
+	public static final int threadsToUse = Runtime.getRuntime().availableProcessors() * 4;
 	private static boolean flooding;
 
 	private String target;
